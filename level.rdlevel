@@ -21,7 +21,7 @@
 		"tags": "", 
 		"separate2PLevelFilename": "", 
 		"canBePlayedOn": "OnePlayerOnly", 
-		"firstBeatBehavior": "RunNormally", 
+		"firstBeatBehavior": "RunEventsOnPrebar", 
 		"multiplayerAppearance": "HorizontalStrips", 
 		"levelVolume": 1, 
 		"rankMaxMistakes": [100, 60, 40, 20], 
@@ -38,7 +38,7 @@
 	},
 	"rows":
 	[
-		{ "character": "Girl", "rowType": "Classic", "row": 0, "rooms": [0], "player": "P1", "pulseSound": "Sizzle", "pulseSoundVolume": 100, "pulseSoundPitch": 100, "pulseSoundPan": 0, "pulseSoundOffset": 0 },
+		{ "character": "custom:lucia_woh", "rowType": "Classic", "row": 0, "rooms": [0], "player": "P1", "pulseSound": "Sizzle", "pulseSoundVolume": 100, "pulseSoundPitch": 100, "pulseSoundPan": 0, "pulseSoundOffset": 0 },
 		{ "character": "None", "rowType": "Classic", "row": 1, "rooms": [0], "player": "P1", "pulseSound": "Shaker", "pulseSoundVolume": 100, "pulseSoundPitch": 100, "pulseSoundPan": 0, "pulseSoundOffset": 0 },
 		{ "character": "None", "rowType": "Classic", "row": 2, "rooms": [0], "player": "P1", "pulseSound": "Shaker", "pulseSoundVolume": 75, "pulseSoundPitch": 100, "pulseSoundPan": 0, "pulseSoundOffset": 0 },
 		{ "character": "None", "rowType": "Oneshot", "row": 3, "rooms": [0], "player": "P1", "pulseSound": "KickRupture", "pulseSoundVolume": 100, "pulseSoundPitch": 100, "pulseSoundPan": 0, "pulseSoundOffset": 0 },
