@@ -23,6 +23,66 @@ row2:setvisibleatstart(false)
 row3:setvisibleatstart(false)
 
 
+--set up ui stuff here
+ui = {}
+ui.top = level:newdecoration('ui_top.png',-1000,mainroom,'ui_top')
+ui.log = level:newdecoration('ui_log.png',100,mainroom,'ui_log')
+ui.middle = level:newdecoration('ui_middle.png',100,mainroom,'ui_middle')
+
+ui.investigate = level:newdecoration('ui_investigate.png',100,mainroom,'ui_investigate')
+ui.investigatebg = level:newdecoration('ui_investigatebg.png',101,mainroom,'ui_investigatebg')
+
+ui.combat = level:newdecoration('ui_combat.png',100,mainroom,'ui_combat')
+ui.combatbg = level:newdecoration('ui_combatbg.png',102,mainroom,'ui_combatbg')
+
+ui.connectifia = level:newdecoration('connectifia',101,mainroom,'connectifia')
+
+ui.decos = {}
+
+function ui:hideall(b)
+	for i,v in ipairs(self.decos) do
+		v:hide(b)
+	end
+end
+
+function ui:setstate(b, state)
+	self:hideall(b)
+	
+	self.top:show(b)
+	self.log:show(b)
+	self.middle:show(b)
+	
+	if state == 'investigate' then
+		self.investigate:show(b)
+		self.investigatebg:show(b)
+	end
+	if state == 'combat' then
+		self.combat:show(b)
+		self.combatbg:show(b)
+		local connx = 0
+		local conny = 21
+		self.connectifia:move(b,{x=PX((18 + connx)/2),y=100-PY((20 + conny)/2),px=0,py=100})
+		self.connectifia:show(b)
+	end
+	
+
+end
+
+for i=0,464,4 do
+	ui.connectifia:playexpression(i,'0')
+	ui.connectifia:playexpression(i+2,'1')
+end
+
+
+
+for k,v in pairs(ui) do
+	if type(v) == 'table' and v.objecttype == 'decoration' then
+		v:move(0,{sx=0.5,sy=0.5})
+		v:setvisibleatstart(false)
+		table.insert(ui.decos,v)
+	end
+end
+
 --slow zoom in
 overlaydeco = level:newdecoration('overlay.png', 0, overlayroom, 'overlay')
 
@@ -87,3 +147,32 @@ for i=0,3 do
 
 end
 
+level:offset(32)
+mainroom:flash(0,colors[1],100,colors[1],0,1)
+ui:setstate(0)
+
+local luciacx = 85
+local luciacy = 25
+local rowx = 3
+local rowy = 25
+local rowscale = 0.666
+local luciascale = 1
+
+local scaleinverse = luciascale/rowscale
+luciarow:move(0,{
+	x=rowx,
+	y=rowy,
+	cx=(luciacx-rowx)*scaleinverse,
+	cy=(luciacy-rowy)*scaleinverse,
+	pivot=0,
+	sx=rowscale,
+	sy =rowscale,
+	csx = scaleinverse,
+	csy = scaleinverse
+})
+luciarow:settint(0,true,'000000',0)
+luciarow:setborder(0,'Outline', colors[0],100)
+
+
+ui:setstate(8,'investigate')
+ui:setstate(16,'combat')
