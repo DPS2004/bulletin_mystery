@@ -28,9 +28,22 @@ ui = {}
 ui.top = level:newdecoration('ui_top.png',-1000,mainroom,'ui_top')
 ui.log = level:newdecoration('ui_log.png',100,mainroom,'ui_log')
 ui.middle = level:newdecoration('ui_middle.png',100,mainroom,'ui_middle')
+ui.middleoneshotcover = level:newdecoration('ui_middleoneshotcover.png',-1000,mainroom,'ui_middleoneshotcover')
+
+ui.town = level:newdecoration('ui_town.png',101,mainroom,'ui_town')
+ui.town_solved = level:newdecoration('ui_town_solved.png',100,mainroom,'ui_town_solved')
+
+ui.rest = level:newdecoration('ui_rest.png',100,mainroom,'ui_rest')
 
 ui.investigate = level:newdecoration('ui_investigate.png',100,mainroom,'ui_investigate')
-ui.investigatebg = level:newdecoration('ui_investigatebg.png',101,mainroom,'ui_investigatebg')
+ui.investigatebg = level:newdecoration('ui_investigatebg.png',102,mainroom,'ui_investigatebg')
+ui.lucia_chibi = level:newdecoration('lucia_chibi.png',101,mainroom,'lucia_chibi')
+
+ui.event1 = level:newdecoration('event1.png',100,mainroom,'event1')
+ui.event2 = level:newdecoration('event2.png',100,mainroom,'event2')
+ui.event3 = level:newdecoration('event3.png',100,mainroom,'event3')
+
+ui.precombat = level:newdecoration('ui_precombat.png',100,mainroom,'ui_precombat')
 
 ui.combat = level:newdecoration('ui_combat.png',100,mainroom,'ui_combat')
 ui.combatbg = level:newdecoration('ui_combatbg.png',102,mainroom,'ui_combatbg')
@@ -38,6 +51,9 @@ ui.combatbg = level:newdecoration('ui_combatbg.png',102,mainroom,'ui_combatbg')
 ui.connectifia = level:newdecoration('connectifia',101,mainroom,'connectifia')
 
 ui.decos = {}
+
+ui.istownsolved = false
+ui.showevent = 1
 
 function ui:hideall(b)
 	for i,v in ipairs(self.decos) do
@@ -51,11 +67,41 @@ function ui:setstate(b, state)
 	self.top:show(b)
 	self.log:show(b)
 	self.middle:show(b)
+	self.middleoneshotcover:show(b)
+	
+	if state == 'town' then
+		self.town:show(b)
+		if self.istownsolved then
+			self.town_solved:show(b)
+		end
+	end
+	
+	if state == 'rest' then
+		self.rest:show(b)
+	end
 	
 	if state == 'investigate' then
 		self.investigate:show(b)
 		self.investigatebg:show(b)
+		self.lucia_chibi:show(b)
+		self.lucia_chibi:move(b,{x=PX((200)/2),y=100-PY((140)/2),px=0,py=100})
+		self.lucia_chibi:move(b,{x=PX((310)/2)},8)
+		for i=0,6,2 do
+			self.lucia_chibi:move(b+i+0,{y=100-PY((138)/2)},0.5,'outSine')
+			self.lucia_chibi:move(b+i+0.5,{y=100-PY((140)/2)},0.5,'inSine')
+			self.lucia_chibi:move(b+i+1,{y=100-PY((142)/2)},0.5,'outSine')
+			self.lucia_chibi:move(b+i+1.5,{y=100-PY((140)/2)},0.5,'inSine')
+		end
 	end
+	
+	if state == 'event' then
+		self['event'..tostring(self.showevent)]:show(b)
+	end
+	
+	if state == 'precombat' then
+		self.precombat:show(b)
+	end
+	
 	if state == 'combat' then
 		self.combat:show(b)
 		self.combatbg:show(b)
@@ -68,7 +114,7 @@ function ui:setstate(b, state)
 
 end
 
-for i=0,464,4 do
+for i=152,464,4 do
 	ui.connectifia:playexpression(i,'0')
 	ui.connectifia:playexpression(i+2,'1')
 end
@@ -147,14 +193,23 @@ for i=0,3 do
 
 end
 
+--row2:classyinit(false)
+--row2:showclassy(29)
+
+row2:move(0,{x=3,y=-10,sx=0.666,sy=0.666,pivot = 0})
+
+row2:show(29)
+
+row2:settint(0,true,colors[1])
+row2:move(29,{y=10},2,'outExpo')
+
 level:offset(32)
 mainroom:flash(0,colors[1],100,colors[1],0,1)
-ui:setstate(0)
-
+--move lucia into place
 local luciacx = 85
 local luciacy = 25
 local rowx = 3
-local rowy = 25
+local rowy = 20
 local rowscale = 0.666
 local luciascale = 1
 
@@ -172,7 +227,36 @@ luciarow:move(0,{
 })
 luciarow:settint(0,true,'000000',0)
 luciarow:setborder(0,'Outline', colors[0],100)
+--end lucia setuprooms
+
+--oneshot setup
+row3:move(0,{x=PX(529)/2,y=100-PY(120)/2,pivot=0,sx=0.25,sy=0.5})
+row3:settint(0,true,colors[0])
+row3:setborder(0,'Outline', colors[0],100)
+row3:show(32)
+--end oneshot setup
 
 
-ui:setstate(8,'investigate')
-ui:setstate(16,'combat')
+--ui changes
+ui:setstate(0,'town')
+ui:setstate(16,'investigate')
+ui.showevent = 3
+ui:setstate(24,'event')
+ui:setstate(32,'town')
+ui:setstate(40,'rest')
+ui:setstate(48,'town')
+ui:setstate(56,'investigate')
+ui.showevent = 1
+ui:setstate(64,'event')
+ui.showevent = 2
+ui:setstate(72,'event')
+ui:setstate(80,'town')
+ui:setstate(88,'rest')
+ui.istownsolved = true
+ui:setstate(96,'town')
+ui:setstate(112,'investigate')
+ui:setstate(120,'precombat')
+
+--combat!
+level:offset(168)
+ui:setstate(0,'combat')
