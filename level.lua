@@ -7,10 +7,11 @@ colors[2] = '814733'
 colors[3] = 'B1735C'
 
 level:setuprooms()
-level:reorderrooms(0,3,0,1,2)
+level:reorderrooms(0,3,0,2,1)
 
 mainroom = level.rooms[0]
 overlayroom = level.rooms[3]
+bgroom = level.rooms[2]
 logostamproom = level.rooms[1]
 
 luciarow = level.rows[0]
@@ -30,8 +31,9 @@ ui.log = level:newdecoration('ui_log.png',100,mainroom,'ui_log')
 ui.middle = level:newdecoration('ui_middle.png',100,mainroom,'ui_middle')
 ui.middleoneshotcover = level:newdecoration('ui_middleoneshotcover.png',-1000,mainroom,'ui_middleoneshotcover')
 
-ui.town = level:newdecoration('ui_town.png',101,mainroom,'ui_town')
-ui.town_solved = level:newdecoration('ui_town_solved.png',100,mainroom,'ui_town_solved')
+ui.town = level:newdecoration('ui_town.png',102,mainroom,'ui_town')
+ui.town_solved = level:newdecoration('ui_town_solved.png',101,mainroom,'ui_town_solved')
+ui.solvepopup = level:newdecoration('ui_solvepopup.png',100,mainroom,'ui_solvepopup')
 
 ui.rest = level:newdecoration('ui_rest.png',100,mainroom,'ui_rest')
 
@@ -46,7 +48,7 @@ ui.event3 = level:newdecoration('event3.png',100,mainroom,'event3')
 ui.precombat = level:newdecoration('ui_precombat.png',100,mainroom,'ui_precombat')
 
 ui.combat = level:newdecoration('ui_combat.png',100,mainroom,'ui_combat')
-ui.combatbg = level:newdecoration('ui_combatbg.png',102,mainroom,'ui_combatbg')
+ui.combatbg = level:newdecoration('ui_combatbg.png',100,bgroom,'ui_combatbg')
 
 ui.connectifia = level:newdecoration('connectifia',101,mainroom,'connectifia')
 
@@ -73,6 +75,7 @@ function ui:setstate(b, state)
 		self.town:show(b)
 		if self.istownsolved then
 			self.town_solved:show(b)
+			self.solvepopup:show(b)
 		end
 	end
 	
@@ -254,9 +257,49 @@ ui:setstate(80,'town')
 ui:setstate(88,'rest')
 ui.istownsolved = true
 ui:setstate(96,'town')
+ui.solvepopup:hide(100)
 ui:setstate(112,'investigate')
 ui:setstate(120,'precombat')
 
 --combat!
+
 level:offset(168)
+
+row1:move(-1,{x=rowx,y=rowy,pivot=0,sx=rowscale,sy=rowscale})
+
+bgroom:screenwaves(0,true,50)
 ui:setstate(0,'combat')
+
+
+local doublerowoffset = 10/3
+luciarow:move(0,{
+	x=rowx,
+	y=rowy-doublerowoffset,
+	cx=(luciacx-rowx)*scaleinverse,
+	cy=(luciacy-(rowy-doublerowoffset))*scaleinverse,
+	pivot=0,
+	sx=rowscale,
+	sy =rowscale,
+	csx = scaleinverse,
+	csy = scaleinverse
+},4,'outExpo')
+row1:show(0)
+row1:move(0,{
+	y=rowy+doublerowoffset
+},4,'outExpo')
+
+luciarow:move(60,{
+	x=rowx,
+	y=rowy,
+	cx=(luciacx-rowx)*scaleinverse,
+	cy=(luciacy-(rowy-doublerowoffset))*scaleinverse,
+	pivot=0,
+	sx=rowscale,
+	sy =rowscale,
+	csx = scaleinverse,
+	csy = scaleinverse
+},4,'inExpo')
+row1:move(60,{
+	y=rowy
+},4,'inExpo')
+row1:hide(64)
