@@ -13,6 +13,7 @@ mainroom = level.rooms[0]
 overlayroom = level.rooms[3]
 bgroom = level.rooms[2]
 logostamproom = level.rooms[1]
+faderoom = level.rooms[1]
 
 luciarow = level.rows[0]
 row1 = level.rows[1]
@@ -63,7 +64,7 @@ function ui:hideall(b)
 	end
 end
 
-function ui:setstate(b, state)
+function ui:setstate(b, state,fadespeed)
 	self:hideall(b)
 	
 	self.top:show(b)
@@ -114,6 +115,11 @@ function ui:setstate(b, state)
 		self.connectifia:show(b)
 	end
 	
+	fadespeed = fadespeed or 1/24
+	if fadespeed ~= 0 then
+		fade:fadein(b,fadespeed)
+	end
+	
 
 end
 
@@ -130,6 +136,28 @@ for k,v in pairs(ui) do
 		v:setvisibleatstart(false)
 		table.insert(ui.decos,v)
 	end
+end
+
+--fade stuff
+
+fade = {}
+fade.fullfade = level:newdecoration('fullfade',1, faderoom, 'fullfade')
+fade.fader = level:newdecoration('fader.png',0,faderoom,'fader')
+fade.fader:setvisibleatstart(false)
+fade.fullfade:move(0,{x=PX(18)/2,y=100-(PY(40)/2),sx=0.5,sy=0.5,px=0,py=100})
+
+function fade:fadein(b,faderspeed)
+	self.fullfade:playexpression(b,'fadein')
+	if faderspeed then
+		for i=0,36 do
+			self.fader:show(b)
+			self.fader:move(b+i*faderspeed,{x=PX(18)/2,y=100-(PY(40+i*8)/2),sx=0.5,sy=0.5,px=0,py=100})
+		end
+	end
+end
+
+function fade:fadeout(b)
+	self.fullfade:playexpression(b,'fadeout')
 end
 
 --slow zoom in
@@ -207,12 +235,18 @@ row2:settint(0,true,colors[1])
 row2:move(29,{y=10},2,'outExpo')
 
 level:offset(32)
+--get rid of logostamp stuff
+level:reorderrooms(0,3,1,0,2)
+faderoom:hom(0,false)
+logotext:hide(0)
+faderoom:mask(0,'fademask.png')
+
 mainroom:flash(0,colors[1],100,colors[1],0,1)
 --move lucia into place
 local luciacx = 85
 local luciacy = 25
 local rowx = 3
-local rowy = 20
+local rowy = 23
 local rowscale = 0.666
 local luciascale = 1
 
@@ -241,14 +275,14 @@ row3:show(32)
 
 
 --ui changes
-ui:setstate(0,'town')
-ui:setstate(16,'investigate')
+ui:setstate(0,'town',0)
+ui:setstate(16,'investigate',0)
 ui.showevent = 3
 ui:setstate(24,'event')
 ui:setstate(32,'town')
 ui:setstate(40,'rest')
 ui:setstate(48,'town')
-ui:setstate(56,'investigate')
+ui:setstate(56,'investigate',0)
 ui.showevent = 1
 ui:setstate(64,'event')
 ui.showevent = 2
@@ -258,8 +292,8 @@ ui:setstate(88,'rest')
 ui.istownsolved = true
 ui:setstate(96,'town')
 ui.solvepopup:hide(100)
-ui:setstate(112,'investigate')
-ui:setstate(120,'precombat')
+ui:setstate(112,'investigate',0)
+ui:setstate(120,'precombat',1/12)
 
 --combat!
 
@@ -268,7 +302,8 @@ level:offset(168)
 row1:move(-1,{x=rowx,y=rowy,pivot=0,sx=rowscale,sy=rowscale})
 
 bgroom:screenwaves(0,true,50)
-ui:setstate(0,'combat')
+ui:setstate(0,'combat',0)
+fade:fadein(0)
 
 
 local doublerowoffset = 10/3
@@ -292,7 +327,7 @@ luciarow:move(60,{
 	x=rowx,
 	y=rowy,
 	cx=(luciacx-rowx)*scaleinverse,
-	cy=(luciacy-(rowy-doublerowoffset))*scaleinverse,
+	cy=(luciacy-(rowy))*scaleinverse,
 	pivot=0,
 	sx=rowscale,
 	sy =rowscale,

@@ -1,0 +1,34 @@
+{
+    "size": [
+        511,
+        288
+    ],
+    "rowPreviewFrame": 0,
+    "rowPreviewOffset": [
+        0,
+        0
+    ],
+    "clips": [
+        {
+            "name": "neutral",
+            "frames": [
+                6
+            ],
+            "loop": "onBeat","fps": 0,"loopStart": 0,"portraitOffset": [ 0,0],"portraitSize": [25,25 ],"portraitScale": 2
+        },
+		{
+            "name": "fadein",
+            "frames": [
+                0,1,2,3,4,5,6
+            ],
+            "loop": "yes","fps": 8, "loopStart": 6,"portraitOffset": [ 0,0],"portraitSize": [25,25 ],"portraitScale": 2
+        },
+		{
+            "name": "fadeout",
+            "frames": [
+                6,5,4,3,2,1,0
+            ],
+            "loop": "no","fps": 8, "loopStart": 6,"portraitOffset": [ 0,0],"portraitSize": [25,25 ],"portraitScale": 2
+        },
+    ]
+}
