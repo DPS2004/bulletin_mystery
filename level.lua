@@ -32,9 +32,14 @@ ui.log = level:newdecoration('ui_log.png',100,mainroom,'ui_log')
 ui.middle = level:newdecoration('ui_middle.png',100,mainroom,'ui_middle')
 ui.middleoneshotcover = level:newdecoration('ui_middleoneshotcover.png',-1000,mainroom,'ui_middleoneshotcover')
 
-ui.town = level:newdecoration('ui_town.png',102,mainroom,'ui_town')
-ui.town_solved = level:newdecoration('ui_town_solved.png',101,mainroom,'ui_town_solved')
+ui.town = level:newdecoration('ui_town.png',103,mainroom,'ui_town')
+ui.town_solved = level:newdecoration('ui_town_solved.png',102,mainroom,'ui_town_solved')
 ui.solvepopup = level:newdecoration('ui_solvepopup.png',100,mainroom,'ui_solvepopup')
+
+ui.townlore1 = level:newdecoration('ui_townlore1.png',101,mainroom,'ui_townlore1')
+ui.townlore2 = level:newdecoration('ui_townlore2.png',101,mainroom,'ui_townlore2')
+ui.townlore3 = level:newdecoration('ui_townlore3.png',101,mainroom,'ui_townlore3')
+
 
 ui.rest = level:newdecoration('ui_rest.png',100,mainroom,'ui_rest')
 
@@ -57,6 +62,7 @@ ui.decos = {}
 
 ui.istownsolved = false
 ui.showevent = 1
+ui.townlore = 1
 
 function ui:hideall(b)
 	for i,v in ipairs(self.decos) do
@@ -74,6 +80,7 @@ function ui:setstate(b, state,fadespeed)
 	
 	if state == 'town' then
 		self.town:show(b)
+		self['townlore'..tostring(self.townlore)]:show(b)
 		if self.istownsolved then
 			self.town_solved:show(b)
 			self.solvepopup:show(b)
@@ -160,6 +167,41 @@ function fade:fadeout(b)
 	self.fullfade:playexpression(b,'fadeout')
 end
 
+--lucia handler
+lucia = {}
+lucia.luciacx = 85
+lucia.luciacy = 25
+lucia.baserowx = 3
+lucia.baserowy = 23
+lucia.rowscale = 0.666
+lucia.luciascale = 1
+
+lucia.x = 0
+lucia.y = 0
+lucia.sx = 1
+lucia.sy = 1
+
+
+function lucia:move(b,p,d,e)
+	self.x = p.x or self.x
+	self.y = p.y or self.y
+	self.sx = p.sx or self.sx
+	self.sy = p.sy or self.sy
+	
+
+	luciarow:move(b,{
+		x=self.baserowx + self.x,
+		y=self.baserowy + self.y,
+		cx=(self.luciacx-self.x-self.baserowx)*(self.luciascale/(self.rowscale * self.sx)),
+		cy=(self.luciacy-self.y-self.baserowy)*(self.luciascale/(self.rowscale * self.sy)),
+		pivot=0,
+		sx= self.rowscale * self.sx,
+		sy =self.rowscale * self.sy,
+		csx = (self.luciascale/(self.rowscale * self.sx)),
+		csy = (self.luciascale/(self.rowscale * self.sy))
+	},d,e)
+end
+
 --slow zoom in
 overlaydeco = level:newdecoration('overlay.png', 0, overlayroom, 'overlay')
 
@@ -232,7 +274,7 @@ row2:move(0,{x=3,y=-10,sx=0.666,sy=0.666,pivot = 0})
 row2:show(29)
 
 row2:settint(0,true,colors[1])
-row2:move(29,{y=10},2,'outExpo')
+row2:move(29,{y=11},2,'outExpo')
 
 level:offset(32)
 --get rid of logostamp stuff
@@ -243,25 +285,11 @@ faderoom:mask(0,'fademask.png')
 
 mainroom:flash(0,colors[1],100,colors[1],0,1)
 --move lucia into place
-local luciacx = 85
-local luciacy = 25
-local rowx = 3
-local rowy = 23
-local rowscale = 0.666
-local luciascale = 1
 
-local scaleinverse = luciascale/rowscale
-luciarow:move(0,{
-	x=rowx,
-	y=rowy,
-	cx=(luciacx-rowx)*scaleinverse,
-	cy=(luciacy-rowy)*scaleinverse,
-	pivot=0,
-	sx=rowscale,
-	sy =rowscale,
-	csx = scaleinverse,
-	csy = scaleinverse
-})
+
+
+
+lucia:move(0,{})
 luciarow:settint(0,true,'000000',0)
 luciarow:setborder(0,'Outline', colors[0],100)
 --end lucia setuprooms
@@ -275,23 +303,51 @@ row3:show(32)
 
 
 --ui changes
+
+--town 1
+--rest
+--town
+--investigate
+--town 2
+--rest
+--town popup
+--investigate
+--town 3
+--investigate
+--combat
+
+ui.townlore = 1
 ui:setstate(0,'town',0)
-ui:setstate(16,'investigate',0)
+
+ui:setstate(16,'rest')
+
+ui:setstate(24,'town')
+
+ui:setstate(32,'investigate',0)
+
 ui.showevent = 3
-ui:setstate(24,'event')
-ui:setstate(32,'town')
-ui:setstate(40,'rest')
+ui:setstate(40,'event')
+
+ui.townlore = 2
 ui:setstate(48,'town')
-ui:setstate(56,'investigate',0)
-ui.showevent = 1
-ui:setstate(64,'event')
-ui.showevent = 2
-ui:setstate(72,'event')
-ui:setstate(80,'town')
-ui:setstate(88,'rest')
+
+ui:setstate(56,'rest')
+
 ui.istownsolved = true
-ui:setstate(96,'town')
-ui.solvepopup:hide(100)
+ui:setstate(64,'town')
+ui.solvepopup:hide(72)
+
+ui:setstate(80,'investigate',0)
+
+ui.showevent = 2
+ui:setstate(88,'event')
+ui.showevent = 3
+ui:setstate(96,'event')
+
+ui.istownsolved = false
+ui.townlore = 3
+ui:setstate(104,'town')
+
 ui:setstate(112,'investigate',0)
 ui:setstate(120,'precombat',1/12)
 
@@ -299,7 +355,7 @@ ui:setstate(120,'precombat',1/12)
 
 level:offset(168)
 
-row1:move(-1,{x=rowx,y=rowy,pivot=0,sx=rowscale,sy=rowscale})
+row1:move(-1,{x=lucia.baserowx,y=lucia.baserowy,pivot=0,sx=lucia.rowscale,sy=lucia.rowscale})
 
 bgroom:screenwaves(0,true,50)
 ui:setstate(0,'combat',0)
@@ -307,34 +363,36 @@ fade:fadein(0)
 
 
 local doublerowoffset = 10/3
-luciarow:move(0,{
-	x=rowx,
-	y=rowy-doublerowoffset,
-	cx=(luciacx-rowx)*scaleinverse,
-	cy=(luciacy-(rowy-doublerowoffset))*scaleinverse,
-	pivot=0,
-	sx=rowscale,
-	sy =rowscale,
-	csx = scaleinverse,
-	csy = scaleinverse
-},4,'outExpo')
+
+lucia:move(0,{y=doublerowoffset*-1},4,'outExpo')
+
 row1:show(0)
 row1:move(0,{
-	y=rowy+doublerowoffset
+	y=lucia.baserowy+doublerowoffset
 },4,'outExpo')
 
-luciarow:move(60,{
-	x=rowx,
-	y=rowy,
-	cx=(luciacx-rowx)*scaleinverse,
-	cy=(luciacy-(rowy))*scaleinverse,
-	pivot=0,
-	sx=rowscale,
-	sy =rowscale,
-	csx = scaleinverse,
-	csy = scaleinverse
-},4,'inExpo')
+lucia.baserowy = lucia.baserowy + doublerowoffset
+lucia:move(60,{y=0},4,'inExpo')
 row1:move(60,{
-	y=rowy
+	y=lucia.baserowy
 },4,'inExpo')
 row1:hide(64)
+
+
+
+for i=0,7 do
+	local b = i*16 + 64
+	local mul = 1
+	if i%2==1 then
+		mul = -1
+	end
+	
+	lucia:move(b+0,{y=-5*mul},1,'outExpo')
+	lucia:move(b+1,{y=0},1,'inExpo')
+	lucia:move(b+2,{y=-10*mul},1,'outExpo')
+	lucia:move(b+3,{y=0},1,'inExpo')
+	lucia:move(b+4,{y=5*mul},1,'outExpo')
+	lucia:move(b+5,{y=0},1,'inExpo')
+	lucia:move(b+6,{y=10*mul},0.75,'outExpo')
+	lucia:move(b+6.75,{y=0},0.75,'inExpo')
+end
