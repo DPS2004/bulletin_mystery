@@ -20,6 +20,9 @@ row1 = level.rows[1]
 row2 = level.rows[2]
 row3 = level.rows[3]
 
+introlucia = level:newdecoration('lucia_woh',-100,mainroom,'introlucia')
+introlucia:setvisibleatstart(false)
+
 row1:setvisibleatstart(false)
 row2:setvisibleatstart(false)
 row3:setvisibleatstart(false)
@@ -169,12 +172,12 @@ end
 
 --lucia handler
 lucia = {}
-lucia.luciacx = 85
-lucia.luciacy = 25
+lucia.luciacx = PX(306.5)
+lucia.luciacy = PY(70)
 lucia.baserowx = 3
 lucia.baserowy = 23
 lucia.rowscale = 0.666
-lucia.luciascale = 1
+lucia.luciascale = 0.5
 
 lucia.x = 0
 lucia.y = 0
@@ -192,8 +195,8 @@ function lucia:move(b,p,d,e)
 	luciarow:move(b,{
 		x=self.baserowx + self.x,
 		y=self.baserowy + self.y,
-		cx=(self.luciacx-self.x-self.baserowx)*(self.luciascale/(self.rowscale * self.sx)),
-		cy=(self.luciacy-self.y-self.baserowy)*(self.luciascale/(self.rowscale * self.sy)),
+		cx=(self.luciacx-self.x-self.baserowx)*(1/(self.rowscale * self.sx)),
+		cy=(self.luciacy-self.y-self.baserowy)*(1/(self.rowscale * self.sy)),
 		pivot=0,
 		sx= self.rowscale * self.sx,
 		sy =self.rowscale * self.sy,
@@ -220,6 +223,10 @@ logotext:setvisibleatstart(false)
 logotext:settint(0,true,colors[1],100)
 
 luciarow:settint(0,true,colors[0],100)
+luciarow:showrow(0)
+introlucia:move(0,{x=10,y=50})
+introlucia:show(0.001)
+introlucia:settint(0,true,colors[0],100)
 
 logostamproom:hom(0,true)
 logostamproom:flash(0,colors[0],100,colors[0],100,0,'Linear',true)
@@ -245,6 +252,8 @@ for i=0,3 do
 	
 	stamptext(b+2.75)
 	stamptext(b+3.00)
+	introlucia:playexpression(b+3,'happy')
+	introlucia:playexpression(b+4,'neutral')
 	
 	stamptext(b+3.75)
 	stamptext(b+4.00)
@@ -257,6 +266,8 @@ for i=0,3 do
 	
 	stamptext(b+6.00)
 	stamptext(b+6.25)
+	introlucia:playexpression(b+6.25,'happy')
+	introlucia:playexpression(b+7,'neutral')
 	
 	stamptext(b+6.75)
 	stamptext(b+7.00)
@@ -285,13 +296,11 @@ faderoom:mask(0,'fademask.png')
 
 mainroom:flash(0,colors[1],100,colors[1],0,1)
 --move lucia into place
-
-
-
-
+introlucia:hide(0)
 lucia:move(0,{})
 luciarow:settint(0,true,'000000',0)
 luciarow:setborder(0,'Outline', colors[0],100)
+luciarow:show(0)
 --end lucia setuprooms
 
 --oneshot setup
@@ -339,9 +348,9 @@ ui.solvepopup:hide(72)
 
 ui:setstate(80,'investigate',0)
 
-ui.showevent = 2
+ui.showevent = 1
 ui:setstate(88,'event')
-ui.showevent = 3
+ui.showevent = 2
 ui:setstate(96,'event')
 
 ui.istownsolved = false

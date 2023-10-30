@@ -7,7 +7,7 @@
 		"specialArtistType": "None", 
 		"artistPermission": "", 
 		"artistLinks": "https://qwesta.bandcamp.com/album/bell-of-horror-world-of-horror-qwesta-bgm-collection", 
-		"author": "DPS2004, Noche", 
+		"author": "DPS2004, AdipemDragon, noche, Het", 
 		"difficulty": "Tough", 
 		"seizureWarning": false, 
 		"previewImage": "preview.png", 
@@ -17,7 +17,7 @@
 		"previewSongDuration": 14, 
 		"songNameHue": 0, 
 		"songLabelGrayscale": true, 
-		"description": "Lucia takes a trip to Shiokawa, Japan, and absolutely nothing goes wrong.", 
+		"description": "Lucia takes a trip to Shiokawa, Japan, and absolutely nothing goes wrong.\n\nAsset credits:\nLucia portrait CC by AdipemDragon\nLucia chibi and combat sprite by Noche\nRest poster by Het\nAll other assets are either directly from or edited from WORLD OF HORROR by panstasz", 
 		"tags": "world of horror, woh, chiptune, vgm, halloween", 
 		"separate2PLevelFilename": "", 
 		"canBePlayedOn": "OnePlayerOnly", 
@@ -38,7 +38,7 @@
 	},
 	"rows":
 	[
-		{ "character": "custom:lucia_woh", "rowType": "Classic", "row": 0, "rooms": [0], "player": "P1", "pulseSound": "Sizzle", "pulseSoundVolume": 100, "pulseSoundPitch": 100, "pulseSoundPan": 0, "pulseSoundOffset": 0 },
+		{ "character": "custom:lucia_woh_new", "rowType": "Classic", "row": 0, "rooms": [0], "player": "P1", "pulseSound": "Sizzle", "pulseSoundVolume": 100, "pulseSoundPitch": 100, "pulseSoundPan": 0, "pulseSoundOffset": 0 },
 		{ "character": "None", "rowType": "Classic", "row": 1, "rooms": [0], "player": "P1", "pulseSound": "Shaker", "pulseSoundVolume": 100, "pulseSoundPitch": 100, "pulseSoundPan": 0, "pulseSoundOffset": 0 },
 		{ "character": "None", "rowType": "Classic", "row": 2, "rooms": [0], "player": "P1", "pulseSound": "Shaker", "pulseSoundVolume": 75, "pulseSoundPitch": 100, "pulseSoundPan": 0, "pulseSoundOffset": 0 },
 		{ "character": "None", "rowType": "Oneshot", "row": 3, "rooms": [0], "player": "P1", "pulseSound": "KickRupture", "pulseSoundVolume": 100, "pulseSoundPitch": 100, "pulseSoundPan": 0, "pulseSoundOffset": 0 },
