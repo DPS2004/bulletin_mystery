@@ -23,6 +23,9 @@ row3 = level.rows[3]
 introlucia = level:newdecoration('lucia_woh',-100,mainroom,'introlucia')
 introlucia:setvisibleatstart(false)
 
+thefunny = level:newdecoration('NOW!.png', 69420, bgroom,'thefunny')
+thefunny:setvisibleatstart(false)
+
 row1:setvisibleatstart(false)
 row2:setvisibleatstart(false)
 row3:setvisibleatstart(false)
@@ -58,6 +61,7 @@ ui.precombat = level:newdecoration('ui_precombat.png',100,mainroom,'ui_precombat
 
 ui.combat = level:newdecoration('ui_combat.png',101,mainroom,'ui_combat')
 ui.combatbg = level:newdecoration('ui_combatbg.png',100,bgroom,'ui_combatbg')
+ui.gimmickwarning = level:newdecoration('ui_gimmickwarning.png',100,mainroom,'ui_gimmickwarning')
 
 ui.victory = level:newdecoration('ui_victory.png',101,mainroom,'ui_victory')
 
@@ -514,6 +518,8 @@ for group_i,group in ipairs(glitch.groups) do
 		group[i]:hide(288)
 	end
 end
+
+ui.gimmickwarning:show(188)
 
 
 ui:setstate(288,'victory',0)
