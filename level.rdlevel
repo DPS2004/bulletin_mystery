@@ -11,13 +11,13 @@
 		"difficulty": "Tough", 
 		"seizureWarning": false, 
 		"previewImage": "preview.png", 
-		"syringeIcon": "", 
+		"syringeIcon": "syringe.png", 
 		"previewSong": "bulletin.ogg", 
 		"previewSongStartTime": 47.5, 
 		"previewSongDuration": 14, 
 		"songNameHue": 0, 
 		"songLabelGrayscale": true, 
-		"description": "Lucia takes a trip to Shiokawa, Japan, and absolutely nothing goes wrong.\n\nAsset credits:\nLucia portrait CC by AdipemDragon\nLucia chibi and combat sprite by Noche\nRest poster by Het\nAll other assets are either directly from or edited from WORLD OF HORROR by panstasz", 
+		"description": "Lucia takes a trip to Shiokawa, Japan, and absolutely nothing goes wrong.\n\nAsset credits:\nLucia portrait CC by AdipemDragon\nLucia chibi and combat sprite by Noche\nRest poster, preview image text, and syringe icon by Het\nAll other assets are either directly from or edited from WORLD OF HORROR by panstasz", 
 		"tags": "world of horror, woh, chiptune, vgm, halloween", 
 		"separate2PLevelFilename": "", 
 		"canBePlayedOn": "OnePlayerOnly", 
@@ -49,6 +49,7 @@
 	"events":
 	[
 		{ "bar": 1, "beat": 1, "y": 0, "type": "PlaySong", "song": {"filename": "bulletin.ogg", "volume": 100, "pitch": 100, "pan": 0, "offset": 0}, "loop": false, "bpm": 80 },
+		{ "bar": 1, "beat": 1, "y": 3, "type": "SetOneshotWave", "row": 3, "waveType": "Spring", "height": 100, "width": 175 },
 		{ "bar": 1, "beat": 1, "y": 1, "type": "SetCrotchetsPerBar", "visualBeatMultiplier": 1, "crotchetsPerBar": 8 },
 		{ "bar": 1, "beat": 1, "y": 0, "type": "AddClassicBeat", "row": 0, "tick": 0.5, "swing": 0.25, "hold": 0 },
 		{ "bar": 1, "beat": 5, "y": 0, "type": "AddClassicBeat", "row": 0, "tick": 0.375, "swing": 0.25, "hold": 0 },
@@ -458,9 +459,11 @@
 		{ "bar": 57, "beat": 3.5, "y": 3, "type": "AddOneshotBeat", "row": 3, "pulseType": "Wave", "tick": 2 },
 		{ "bar": 57, "beat": 4, "y": 3, "type": "SayReadyGetSetGo", "active": false, "phraseToSay": "Count1", "voiceSource": "Nurse", "tick": 1, "volume": 100 },
 		{ "bar": 57, "beat": 4, "y": 3, "type": "AddOneshotBeat", "row": 3, "pulseType": "Square", "squareSound": true, "tick": 1.5 },
-		{ "bar": 58, "beat": 1, "y": 0, "type": "FinishLevel" },
-		{ "bar": 58, "beat": 2, "y": 1, "type": "FinishLevel" },
-		{ "bar": 58, "beat": 3, "y": 2, "type": "FinishLevel" },
+		{ "bar": 58, "beat": 1, "y": 1, "type": "PlaySound", "isCustom": true, "customSoundType": "CueSound", "sound": {"filename": "woh_victory.ogg", "volume": 100, "pitch": 100, "pan": 0, "offset": 0} },
+		{ "bar": 58, "beat": 1, "y": 0, "type": "SetBeatsPerMinute", "beatsPerMinute": 122 },
+		{ "bar": 59, "beat": 8, "y": 0, "type": "FinishLevel" },
+		{ "bar": 60, "beat": 1, "y": 1, "type": "FinishLevel" },
+		{ "bar": 60, "beat": 2, "y": 2, "type": "FinishLevel" },
 	],
 	"conditionals":
 	[

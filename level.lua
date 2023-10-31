@@ -56,10 +56,12 @@ ui.event3 = level:newdecoration('event3.png',100,mainroom,'event3')
 
 ui.precombat = level:newdecoration('ui_precombat.png',100,mainroom,'ui_precombat')
 
-ui.combat = level:newdecoration('ui_combat.png',100,mainroom,'ui_combat')
+ui.combat = level:newdecoration('ui_combat.png',101,mainroom,'ui_combat')
 ui.combatbg = level:newdecoration('ui_combatbg.png',100,bgroom,'ui_combatbg')
 
-ui.connectifia = level:newdecoration('connectifia',101,mainroom,'connectifia')
+ui.victory = level:newdecoration('ui_victory.png',101,mainroom,'ui_victory')
+
+ui.connectifia = level:newdecoration('connectifia',102,mainroom,'connectifia')
 
 ui.decos = {}
 
@@ -125,6 +127,15 @@ function ui:setstate(b, state,fadespeed)
 		self.connectifia:show(b)
 	end
 	
+	if state == 'victory' then
+		self.victory:show(b)
+		self.combatbg:show(b)
+		local connx = 0
+		local conny = 21
+		self.connectifia:move(b,{x=PX((18 + connx)/2),y=100-PY((20 + conny)/2),px=0,py=100})
+		self.connectifia:show(b)
+	end
+	
 	fadespeed = fadespeed or 1/24
 	if fadespeed ~= 0 then
 		fade:fadein(b,fadespeed)
@@ -133,7 +144,7 @@ function ui:setstate(b, state,fadespeed)
 
 end
 
-for i=152,464,4 do
+for i=152,452,4 do
 	ui.connectifia:playexpression(i,'0')
 	ui.connectifia:playexpression(i+2,'1')
 end
@@ -304,7 +315,7 @@ luciarow:show(0)
 --end lucia setuprooms
 
 --oneshot setup
-row3:move(0,{x=PX(529)/2,y=100-PY(120)/2,pivot=0,sx=0.25,sy=0.5})
+row3:move(0,{x=PX(529)/2,y=100-PY(120)/2,pivot=0,sx=0.25,sy=0.25})
 row3:settint(0,true,colors[0])
 row3:setborder(0,'Outline', colors[0],100)
 row3:show(32)
@@ -405,3 +416,119 @@ for i=0,7 do
 	lucia:move(b+6,{y=10*mul},0.75,'outExpo')
 	lucia:move(b+6.75,{y=0},0.75,'inExpo')
 end
+
+--glitch
+
+--192
+glitch = {}
+glitch.groups = {}
+glitch.activegroups = 0
+math.randomseed(0)
+
+function glitch:newgroup()
+	local group = {}
+	for i=0,8 do
+		local newdeco = level:newdecoration('glitch',-1001,mainroom)
+		newdeco:setvisibleatstart(false)
+		newdeco:move(191,{x=PX(math.random(8,352-8)),y=PY(math.random(8,198-8)),sx=0.5,sy=0.5})
+		group[i] = newdeco
+	end
+	table.insert(self.groups,group)
+end
+
+glitchoffsets = 
+{
+	{{-1,1},{0,1},{1,1},
+	{-1,0},{0,0},{1,0},
+	{-1,-1},{0,-1},{1,-1}},	
+	
+	{{-1,1},{0,1},{1,1},
+	{-1,0},{0,0},{1,0},
+	{-1,-1},{0,-1},{1,-1}},
+	
+	{{-2,1},{-1,1},{0,1},
+	{-1,0},{0,0},{1,0},
+	{0,-1},{1,-1},{2,-1}},
+	
+	{{0,1},{1,1},{2,1},
+	{-1,0},{0,0},{1,0},
+	{-2,-1},{-1,-1},{0,-1}}
+}
+
+function glitch:moveall(b)
+	for	group_i=1,self.activegroups do
+		group = self.groups[group_i]
+		local x = PX(math.random(32,352-32))
+		local y = PY(math.random(32,198-32))
+		local offset = glitchoffsets[math.random(1,4)]
+		
+		for i=0,8 do
+			group[i]:move(b,{x = x+PX(offset[i+1][1]*8), y=y+PY(offset[i+1][2]*8)},2,'outExpo')
+		end
+	end
+end
+
+function glitch:showgroup(b,g)
+	self.activegroups = self.activegroups + 1
+	for i=0,8 do
+		self.groups[g][i]:show(b)
+	end
+end
+
+
+
+movebeats = {2,5,
+8.5,12,15,
+18.5,21.5,
+25,28,31.5,
+34.5,38,
+41,44.5,47}
+
+glitch:newgroup()
+glitch:showgroup(192,#glitch.groups)
+glitch:moveall(192)
+for r=0,1 do
+
+	for i,v in ipairs(movebeats) do
+		local b = 192+48*r+v
+		if(i%3==0) then
+			glitch:newgroup()
+			glitch:showgroup(b,#glitch.groups)
+		end
+		glitch:moveall(b)
+	end
+end
+
+
+
+--animate glitches 
+
+for group_i,group in ipairs(glitch.groups) do
+	for i=0,8 do
+		for b=0,192 do
+			local finalbeat = (b/2)+192
+			if getvalue(group[i],'visible',finalbeat + 0) then
+				group[i]:playexpression(finalbeat,tostring(math.random(0,127)))
+			end
+		end
+		group[i]:hide(288)
+	end
+end
+
+
+ui:setstate(288,'victory',0)
+bgroom:screenwaves(288,false)
+luciarow:showchar(288)
+row2:hide(288)
+row3:hide(288)
+
+mainroom:move(288,{sx=200/3,sy=200/3},16,'inOutSine')
+bgroom:move(288,{sx=200/3,sy=200/3},16,'inOutSine')
+overlaydeco:move(288,{sx=1/3,sy=1/3},16,'inOutSine')
+
+mainroom:setfg(304,'endfade0.png')
+mainroom:setfg(305,'endfade1.png')
+mainroom:setfg(306,'endfade2.png')
+mainroom:setfg(307,'endfade3.png')
+mainroom:setfg(308,'endfade4.png')
+mainroom:setfg(309,'endfade5.png')
